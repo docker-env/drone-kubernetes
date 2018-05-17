@@ -15,6 +15,12 @@ func main() {
 	app.Version = "0.1"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
+			Name:   "replicas",
+			Usage:  "pods replicas",
+			Value:  "1",
+			EnvVar: "PLUGIN_KUBERNETES_REPLICAS,KUBERNETES_REPLICAS",
+		},
+		cli.StringFlag{
 			Name:   "token",
 			Usage:  "Kubernetes token",
 			EnvVar: "PLUGIN_KUBERNETES_TOKEN,KUBERNETES_TOKEN",
@@ -123,17 +129,18 @@ func run(c *cli.Context) error {
 			Name:  c.String("repo.name"),
 		},
 		Build: Build{
-			Tag:     c.String("build.tag"),
-			Number:  c.Int("build.number"),
-			Event:   c.String("build.event"),
-			Status:  c.String("build.status"),
-			Commit:  c.String("commit.sha"),
-			Ref:     c.String("commit.ref"),
-			Branch:  c.String("commit.branch"),
-			Author:  c.String("commit.author"),
-			Link:    c.String("build.link"),
-			Started: c.Int64("build.started"),
-			Created: c.Int64("build.created"),
+			Tag:      c.String("build.tag"),
+			Number:   c.Int("build.number"),
+			Event:    c.String("build.event"),
+			Status:   c.String("build.status"),
+			Commit:   c.String("commit.sha"),
+			Ref:      c.String("commit.ref"),
+			Branch:   c.String("commit.branch"),
+			Author:   c.String("commit.author"),
+			Link:     c.String("build.link"),
+			Started:  c.Int64("build.started"),
+			Created:  c.Int64("build.created"),
+			Replicas: c.String("replicas"),
 		},
 		Job: Job{
 			Started: c.Int64("job.started"),

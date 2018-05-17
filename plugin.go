@@ -30,17 +30,18 @@ type (
 	}
 
 	Build struct {
-		Tag     string
-		Event   string
-		Number  int
-		Commit  string
-		Ref     string
-		Branch  string
-		Author  string
-		Status  string
-		Link    string
-		Started int64
-		Created int64
+		Tag      string
+		Event    string
+		Number   int
+		Commit   string
+		Ref      string
+		Branch   string
+		Author   string
+		Status   string
+		Link     string
+		Started  int64
+		Created  int64
+		Replicas string
 	}
 
 	Job struct {
@@ -130,7 +131,7 @@ func (p Plugin) Exec() error {
 				return err
 			}
 
-		// appsv1beta1
+			// appsv1beta1
 		case *appsv1beta1.Deployment:
 			deploymentSet := clientset.AppsV1beta1().Deployments(p.Config.Namespace)
 			err := applyDeploymentAppsV1beta1(o, deploymentSet)
@@ -145,7 +146,7 @@ func (p Plugin) Exec() error {
 				return err
 			}
 
-		// appsv1beta2
+			// appsv1beta2
 		case *appsv1beta2.DaemonSet:
 			daemonSetSet := clientset.AppsV1beta2().DaemonSets(p.Config.Namespace)
 			err := applyDaemonSetAppsV1beta2(o, daemonSetSet)
@@ -174,7 +175,7 @@ func (p Plugin) Exec() error {
 				return err
 			}
 
-		// corev1
+			// corev1
 		case *corev1.ConfigMap:
 			configMapSet := clientset.CoreV1().ConfigMaps(p.Config.Namespace)
 			err := applyConfigMap(o, configMapSet)
@@ -223,7 +224,7 @@ func (p Plugin) Exec() error {
 				return err
 			}
 
-		// extensionsv1beta1
+			// extensionsv1beta1
 		case *extensionsv1beta1.DaemonSet:
 			daemonSetSet := clientset.ExtensionsV1beta1().DaemonSets(p.Config.Namespace)
 			err := applyDaemonSetExtensionsV1beta1(o, daemonSetSet)
@@ -266,7 +267,7 @@ func (p Plugin) getClient() (*kubernetes.Clientset, error) {
 	cert, err := base64.StdEncoding.DecodeString(p.Config.Cert)
 	config := clientcmdapi.NewConfig()
 	config.Clusters["drone"] = &clientcmdapi.Cluster{
-		Server: p.Config.Server,
+		Server:                   p.Config.Server,
 		CertificateAuthorityData: cert,
 	}
 	config.AuthInfos["drone"] = &clientcmdapi.AuthInfo{
